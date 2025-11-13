@@ -86,53 +86,50 @@ with mp_pose.Pose(
                 cv2.circle(image, (x_px, y_px), 8, (0, 0, 255), -1)
                 cv2.circle(image, (x_px, y_px), 10, (255, 255, 255), 2)
 
-            # Extract coordinates
-            left_shoulder = landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER]
-            left_elbow = landmarks[mp_pose.PoseLandmark.LEFT_ELBOW]
-            left_wrist = landmarks[mp_pose.PoseLandmark.LEFT_WRIST]
+        if pose_results.pose_world_landmarks:
+            w_landmarks = pose_results.pose_world_landmarks.landmark
 
-            right_shoulder = landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER]
-            right_elbow = landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW]
-            right_wrist = landmarks[mp_pose.PoseLandmark.RIGHT_WRIST]
+            # Extract coordinates
+            left_shoulder = w_landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER]
+            left_elbow = w_landmarks[mp_pose.PoseLandmark.LEFT_ELBOW]
+            left_wrist = w_landmarks[mp_pose.PoseLandmark.LEFT_WRIST]
+
+            right_shoulder = w_landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER]
+            right_elbow = w_landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW]
+            right_wrist = w_landmarks[mp_pose.PoseLandmark.RIGHT_WRIST]
 
             # Print coordinates
             print("\n=== LEFT ARM ===")
-            print(f"Shoulder: Norm({left_shoulder.x:.3f}, {left_shoulder.y:.3f}, {left_shoulder.z:.3f}) | "
-                  f"Px({int(left_shoulder.x * w)}, {int(left_shoulder.y * h)})")
-            print(f"ELBOW:    Norm({left_elbow.x:.3f}, {left_elbow.y:.3f}, {left_elbow.z:.3f}) | "
-                  f"Px({int(left_elbow.x * w)}, {int(left_elbow.y * h)})")
-            print(f"Wrist:    Norm({left_wrist.x:.3f}, {left_wrist.y:.3f}, {left_wrist.z:.3f}) | "
-                  f"Px({int(left_wrist.x * w)}, {int(left_wrist.y * h)})")
+            print(f"Shoulder: Norm({left_shoulder.x:.3f}, {left_shoulder.y:.3f}, {left_shoulder.z:.3f})")
+            print(f"ELBOW:    Norm({left_elbow.x:.3f}, {left_elbow.y:.3f}, {left_elbow.z:.3f})")
+            print(f"Wrist:    Norm({left_wrist.x:.3f}, {left_wrist.y:.3f}, {left_wrist.z:.3f})")
 
             print("\n=== RIGHT ARM ===")
-            print(f"Shoulder: Norm({right_shoulder.x:.3f}, {right_shoulder.y:.3f}, {right_shoulder.z:.3f}) | "
-                  f"Px({int(right_shoulder.x * w)}, {int(right_shoulder.y * h)})")
-            print(f"ELBOW:    Norm({right_elbow.x:.3f}, {right_elbow.y:.3f}, {right_elbow.z:.3f}) | "
-                  f"Px({int(right_elbow.x * w)}, {int(right_elbow.y * h)})")
-            print(f"Wrist:    Norm({right_wrist.x:.3f}, {right_wrist.y:.3f}, {right_wrist.z:.3f}) | "
-                  f"Px({int(right_wrist.x * w)}, {int(right_wrist.y * h)})")
+            print(f"Shoulder: Norm({right_shoulder.x:.3f}, {right_shoulder.y:.3f}, {right_shoulder.z:.3f})")
+            print(f"ELBOW:    Norm({right_elbow.x:.3f}, {right_elbow.y:.3f}, {right_elbow.z:.3f})")
+            print(f"Wrist:    Norm({right_wrist.x:.3f}, {right_wrist.y:.3f}, {right_wrist.z:.3f})")
 
             # Display info on screen - LEFT ARM
             image = cv2.flip(image, 1)
             y_offset = 30
             cv2.putText(image, "LEFT ARM", (10, y_offset),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-            cv2.putText(image, f"Shoulder: ({int(left_shoulder.x * w)}, {int(left_shoulder.y * h)})",
-                        (10, y_offset + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            cv2.putText(image, f"ELBOW: ({int(left_elbow.x * w)}, {int(left_elbow.y * h)})",
-                        (10, y_offset + 55), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
-            cv2.putText(image, f"Wrist: ({int(left_wrist.x * w)}, {int(left_wrist.y * h)})",
-                        (10, y_offset + 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+            cv2.putText(image, f"Shoulder: ({left_shoulder.x:.3f}, {left_shoulder.y:.3f}, {left_shoulder.z:.3f})",
+                        (10, y_offset + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+            cv2.putText(image, f"ELBOW: ({left_elbow.x:.3f}, {left_elbow.y:.3f}, {left_elbow.z:.3f})",
+                        (10, y_offset + 55), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2)
+            cv2.putText(image, f"Wrist: ({left_wrist.x:.3f}, {left_wrist.y:.3f}, {left_wrist.z:.3f})",
+                        (10, y_offset + 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
             # Display info on screen - RIGHT ARM
             y_offset = 150
             cv2.putText(image, "RIGHT ARM", (10, y_offset),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-            cv2.putText(image, f"Shoulder: ({int(right_shoulder.x * w)}, {int(right_shoulder.y * h)})",
+            cv2.putText(image, f"Shoulder: ({right_shoulder.x:.3f}, {right_shoulder.y:.3f}, {right_shoulder.z:.3f})",
                         (10, y_offset + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            cv2.putText(image, f"ELBOW: ({int(right_elbow.x * w)}, {int(right_elbow.y * h)})",
+            cv2.putText(image, f"ELBOW: ({right_elbow.x:.3f}, {right_elbow.y:.3f}, {right_elbow.z:.3f})",
                         (10, y_offset + 55), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
-            cv2.putText(image, f"Wrist: ({int(right_wrist.x * w)}, {int(right_wrist.y * h)})",
+            cv2.putText(image, f"Wrist: ({right_wrist.x:.3f}, {right_wrist.y:.3f}, {right_wrist.z:.3f})",
                         (10, y_offset + 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
             image = cv2.flip(image, 1)
 
